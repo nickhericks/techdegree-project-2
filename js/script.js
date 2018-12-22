@@ -2,7 +2,9 @@
 // https://drive.google.com/file/d/1OD1diUsTMdpfMDv677TfL1xO2CEkykSz/view?usp=sharing
 
 const page = document.querySelector('.page'); // used for appendPageLinks function
+const studentItems = document.querySelectorAll('.student-item');
 
+let selectedPage = 0;
 
 // Use JS to create and append search to the page
 const pageHeader = document.querySelector('.page-header');
@@ -13,7 +15,6 @@ searchDiv.innerHTML = `
   <button>Search</button>
 `;
 pageHeader.appendChild(searchDiv);
-
 
 /***
    Create the `showPage` function to hide all of the items in the
@@ -29,10 +30,22 @@ pageHeader.appendChild(searchDiv);
        that will be passed into the parens later when you call or
        "invoke" the function
 ***/
-function showPage() {
+
+const showPage = (list, page) => {
+  // Reset page to hide all students
+  for(let i = 0; i < list.length; i++) {
+    list[i].style.display = 'none';
+  }
+
+  // Display the block of students requested
+  for(let i = 0; i < 10; i++) {
+    list[i].style.display = 'block';
+  }
+
+
 
 }
-
+showPage(studentItems, selectedPage);
 
 /***
    Create the `appendPageLinks function` to generate, append, and add
@@ -40,8 +53,29 @@ function showPage() {
 ***/
 function appendPageLinks() {
   const pageLinks = document.createElement('div');
+  const linksUl = document.createElement('ul');
   pageLinks.className = 'pagination';
+  pageLinks.appendChild(linksUl);
+  const linksList = document.querySelector('.paginator.firstChild');
+  console.log(pageLinks);
+  console.log(linksList);
 
+  // Find total number of students
+  let numStudents = studentItems.length;
+  console.log(`Number of students is: ${numStudents}`);
+
+  let numPages = 0;
+
+  for(let i = 0; i < numStudents; i += 10) {
+    numPages++;
+  }
+  console.log(`Number of pages: ${numPages}  (${numStudents}/10 = ${numPages -1} + 1 for remaining students)`);
+
+
+  // pageLinks.innerHTML = `
+  //
+  //
+  // `;
 
 
 
@@ -53,4 +87,4 @@ appendPageLinks();
 
 
 
-console.log(page);
+// console.log(page);
