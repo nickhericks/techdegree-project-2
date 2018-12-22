@@ -21,8 +21,6 @@ pageHeader.appendChild(searchDiv);
    list except for the ten you want to show.
 
    Pro Tips:
-     - Keep in mind that with a list of 54 students, the last page
-       will only display four.
      - Remember that the first student has an index of 0.
      - Remember that a function `parameter` goes in the parens when
        you initially define the function, and it acts as a variable
@@ -47,18 +45,18 @@ const showPage = (list, page) => {
 }
 showPage(studentItems, selectedPage);
 
+
+
 /***
    Create the `appendPageLinks function` to generate, append, and add
    functionality to the pagination buttons.
 ***/
+
 function appendPageLinks() {
-  const pageLinks = document.createElement('div');
+  const linksDiv = document.createElement('div');
   const linksUl = document.createElement('ul');
-  pageLinks.className = 'pagination';
-  pageLinks.appendChild(linksUl);
-  const linksList = document.querySelector('.paginator.firstChild');
-  console.log(pageLinks);
-  console.log(linksList);
+  linksDiv.className = 'pagination';
+  linksDiv.appendChild(linksUl);
 
   // Find total number of students
   let numStudents = studentItems.length;
@@ -72,19 +70,32 @@ function appendPageLinks() {
   console.log(`Number of pages: ${numPages}  (${numStudents}/10 = ${numPages -1} + 1 for remaining students)`);
 
 
-  // pageLinks.innerHTML = `
-  //
-  //
-  // `;
+  for(let i = 0; i < numPages; i++) {
+    let button = document.createElement('li');
+    let anchor = document.createElement('a');
+    anchor.href = '#';
+
+    if(i === selectedPage) {
+      anchor.className = 'active';
+    }
+
+    anchor.textContent = i + 1;
+    button.appendChild(anchor);
+    linksUl.appendChild(button);
+
+    console.log(button);
+
+    button.addEventListener('click', (e) => {
+      console.log(e.target.textContent);
+      selectedPage = e.target.textContent
+      console.log(selectedPage);
+      showPage(studentItems, selectedPage);
+    });
+  }
 
 
 
-
-  page.appendChild(pageLinks);
+  page.appendChild(linksDiv);
 }
 
 appendPageLinks();
-
-
-
-// console.log(page);
