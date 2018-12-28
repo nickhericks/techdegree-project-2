@@ -1,11 +1,11 @@
 /* GLOBAL VARIABLES */
-const page = document.querySelector('.page'); // used for appendPageLinks function
+const page = document.querySelector('.page');
 const fullStudentList = document.querySelectorAll('.student-item');
 let searchString = '';
 let filteredStudentList = [];
 
 
-// Append search bar feature to the page
+// Elements for search bar feature
 const pageHeader = document.querySelector('.page-header');
 const searchDiv = document.createElement('div');
 searchDiv.className = 'student-search';
@@ -14,29 +14,38 @@ searchDiv.innerHTML = `
   <button>Search</button>
 `;
 
-searchDiv.addEventListener('input', (e) => {
-  // console.log(event.target.value);
+const input = searchDiv.firstElementChild;
+const searchButton = input.nextElementSibling;
 
+// Call search() when input value changes
+input.addEventListener('input', (e) => {
   searchString = event.target.value;
+  search();
+});
+
+// Call search() when search button clicked
+searchButton.addEventListener('click', () => {
+  searchString = input.value;
   search();
 });
 
 pageHeader.appendChild(searchDiv);
 
 
-// Create elements for pagination buttons
-const linksDiv = document.createElement('div');  // Create div element
-const linksUl = document.createElement('ul');    // Create ul element
-linksDiv.className = 'pagination';               // Give class to div
-linksDiv.appendChild(linksUl);                   // Append ul to div
+// Parent elements for pagination buttons
+const linksDiv = document.createElement('div');
+const linksUl = document.createElement('ul');
+linksDiv.className = 'pagination';
+linksDiv.appendChild(linksUl);
 
-// Create elements to display if no students match search query
-// TODO: When a search yields 0 results, a message is displayed on the page, informing the user that no results have been found.
-
-const noResults = document.createElement('div');
-noResults.textContent = `Sorry, no students match your search query.`;
-noResults.style.display = 'none';
-page.appendChild(noResults);
+// Element to display if no students match search query
+const noResultsDiv = document.createElement('div');
+noResultsDiv.textContent = `🧐 Sorry, no students match your search query.`;
+noResultsDiv.style.fontSize = '1.5rem';
+noResultsDiv.style.margin = '4rem';
+noResultsDiv.style.textAlign = 'center';
+noResultsDiv.style.display = 'none';
+page.appendChild(noResultsDiv);
 
 
 
@@ -57,19 +66,18 @@ const showPage = (list, button) => {
   // }
 
   if(list.length === 0) {
-    console.log("none to show!!!");
-    noResults.style.display = 'block';
+    noResultsDiv.style.display = 'block';
   } else {
-    noResults.style.display = 'none';
+    noResultsDiv.style.display = 'none';
 
     let listStart = ((button - 1) * 10);
     let listEnd = (listStart + 10);
     // console.log(listStart);
     // console.log(listEnd);
-    console.log(list.length);
+    // console.log(list.length);
 
     // Display the block of students requested
-    for(let i = listStart; i < listEnd; i++) {
+    for(let i = listStart; i < listEnd && i < list.length; i++) {
       list[i].style.display = 'block';
     }
   }
@@ -95,13 +103,13 @@ function appendPageLinks(studentList) {
 
   // Find total number of students
   let numStudents = studentList.length;
-  console.log(`numStudents: ${numStudents}`);
+  // console.log(`numStudents: ${numStudents}`);
 
 
   for(let i = 0; i < numStudents; i += 10) {
     numPages++;
   }
-  console.log(`numPages: ${numPages}`);
+  // console.log(`numPages: ${numPages}`);
 
 
   for(let i = 0; i < numPages; i++) {
