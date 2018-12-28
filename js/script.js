@@ -4,7 +4,7 @@
 const page = document.querySelector('.page'); // used for appendPageLinks function
 const studentItems = document.querySelectorAll('.student-item');
 
-let selectedPage = 0;
+let selectedButton = 1;
 
 // Use JS to create and append search to the page
 const pageHeader = document.querySelector('.page-header');
@@ -15,6 +15,7 @@ searchDiv.innerHTML = `
   <button>Search</button>
 `;
 pageHeader.appendChild(searchDiv);
+
 
 /***
    Create the `showPage` function to hide all of the items in the
@@ -29,21 +30,27 @@ pageHeader.appendChild(searchDiv);
        "invoke" the function
 ***/
 
-const showPage = (list, page) => {
+const showPage = (list, button) => {
   // Reset page to hide all students
   for(let i = 0; i < list.length; i++) {
     list[i].style.display = 'none';
   }
 
+  let listStart = ((button - 1) * 10);
+  let listEnd = (listStart + 10);
+  console.log(listStart);
+  console.log(listEnd);
+  console.log(list.length);
+
   // Display the block of students requested
-  for(let i = 0; i < 10; i++) {
+  for(let i = listStart; i < listEnd; i++) {
     list[i].style.display = 'block';
   }
 
 
 
 }
-showPage(studentItems, selectedPage);
+showPage(studentItems, selectedButton);
 
 
 
@@ -52,22 +59,26 @@ showPage(studentItems, selectedPage);
    functionality to the pagination buttons.
 ***/
 
-function appendPageLinks() {
-  const linksDiv = document.createElement('div');
-  const linksUl = document.createElement('ul');
-  linksDiv.className = 'pagination';
-  linksDiv.appendChild(linksUl);
+function appendPageLinks(studentList) {
+  // Create elements
+  const linksDiv = document.createElement('div');  // Create div element
+  const linksUl = document.createElement('ul');    // Create ul element
+  linksDiv.className = 'pagination';               // Give class to div
+  linksDiv.appendChild(linksUl);                   // Append ul to div
+
+  let numPages = 0;                                // Reset numPages
 
   // Find total number of students
-  let numStudents = studentItems.length;
-  console.log(`Number of students is: ${numStudents}`);
+  let numStudents = studentList.length;
+  // console.log(`Number of students is: ${numStudents}`);
+  console.log(`numStudents: ${numStudents}`);
 
-  let numPages = 0;
 
   for(let i = 0; i < numStudents; i += 10) {
     numPages++;
   }
-  console.log(`Number of pages: ${numPages}  (${numStudents}/10 = ${numPages -1} + 1 for remaining students)`);
+  // console.log(`Number of pages: ${numPages}  (${numStudents}/10 = ${numPages -1} + 1 for remaining students)`);
+  console.log(`numPages: ${numPages}`);
 
 
   for(let i = 0; i < numPages; i++) {
@@ -75,7 +86,7 @@ function appendPageLinks() {
     let anchor = document.createElement('a');
     anchor.href = '#';
 
-    if(i === selectedPage) {
+    if(i === 0) {
       anchor.className = 'active';
     }
 
@@ -83,19 +94,27 @@ function appendPageLinks() {
     button.appendChild(anchor);
     linksUl.appendChild(button);
 
-    console.log(button);
-
-    button.addEventListener('click', (e) => {
-      console.log(e.target.textContent);
-      selectedPage = e.target.textContent
-      console.log(selectedPage);
-      showPage(studentItems, selectedPage);
-    });
+    //console.log(button);
   }
+
+
+  linksUl.addEventListener('click', (e) => {
+    // console.log(selectedButton);
+    let undoSelectedButton = document.querySelector('.active');
+    // const buttons = linksUl.children;
+    // for(let i = 0; i < buttons.length; i++) {
+    undoSelectedButton.className = '';            // Clear 'active' class from all buttons
+    // }
+
+    selectedButton = e.target.textContent;  // Update selectedButton number
+    console.log(selectedButton);
+    e.target.className = 'active';
+    showPage(studentList, selectedButton);
+  });
 
 
 
   page.appendChild(linksDiv);
 }
 
-appendPageLinks();
+appendPageLinks(studentItems);
