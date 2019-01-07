@@ -1,3 +1,8 @@
+/******************************************
+Treehouse Techdegree:
+Full Stack JavaScript - Project 2: List Filter and Pagination
+******************************************/
+
 // Global variables
 const page = document.querySelector('.page');
 const fullStudentList = document.querySelectorAll('.student-item');
@@ -5,20 +10,18 @@ const pageHeader = document.querySelector('.page-header');
 
 const searchDiv = document.createElement('div');
 const searchInput = document.createElement('input');
-const searchButton = document.createElement('button');
 const pageButtonsDiv = document.createElement('div');
 const pageButtonsUl = document.createElement('ul');
 const noResultsDiv = document.createElement('div');
 
 let searchString = '';
 let filteredStudentList = [];
+const maxStudentsPerPage = 10;
 
 // Append elements for search bar feature
 searchDiv.className = 'student-search';
 searchInput.placeholder = "Search for students...";
-searchButton.textContent = "Search";
 searchDiv.appendChild(searchInput);
-searchDiv.appendChild(searchButton);
 pageHeader.appendChild(searchDiv);
 
 // Append elements for pagination buttons
@@ -36,21 +39,19 @@ page.appendChild(noResultsDiv);
 
 // Hide all items in list except for the ten you want to show
 const showPage = (list, button) => {
-  // Reset page to hide all students
+  // Set all students to diplay none
   for(let i = 0; i < fullStudentList.length; i++) {
     fullStudentList[i].style.display = 'none';
   }
+  
   // If no results, display message
   if(list.length === 0) {
     noResultsDiv.style.display = 'block';
   }
-  // Display students based on page button selection
+  // else display students based on page button selection
   else {
-    // Display index of student based on button selected
-    let indexStart = ((button - 1) * 10);
-    // Ensure nomore than ten students are displayed
-    let indexEnd = (indexStart + 10);
-    // Display the block of students requested
+    let indexStart = ((button - 1) * maxStudentsPerPage);
+    let indexEnd = (indexStart + maxStudentsPerPage);
     for(let i = indexStart; i < indexEnd && i < list.length; i++) {
       list[i].style.display = 'block';
     }
@@ -60,17 +61,12 @@ const showPage = (list, button) => {
 
 // Generate, append and add functionality to pagination buttons
 const appendPageLinks = (studentList) => {
-  let numPages = 0;
   let numStudents = studentList.length;
+  let numPages = Math.ceil(numStudents / maxStudentsPerPage);
   let selectedButton = 1;
   pageButtonsUl.innerHTML = '';
 
   showPage(studentList, selectedButton);
-
-  // Find total number of page buttons needed
-  for(let i = 0; i < numStudents; i += 10) {
-    numPages++;
-  }
 
   // Create new button for each page
   for(let i = 0; i < numPages; i++) {
@@ -121,12 +117,6 @@ const newQuery = () => {
 // Call search() function when input value changes
 searchInput.addEventListener('input', (e) => {
   searchString = event.target.value;
-  newQuery();
-});
-
-// Call search() function when search button is clicked
-searchButton.addEventListener('click', () => {
-  searchString = searchInput.value;
   newQuery();
 });
 
