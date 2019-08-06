@@ -4,11 +4,12 @@
 This project utilizes a progressive enhancement approach to add pagination and search filtering features to a student list page.
 
 ***
-<img src="https://res.cloudinary.com/dtqevfsxh/image/upload/v1550132316/portfolio/list-pagination-and-filtering.gif" width="500px">
-
-
 ## View project
 :mag: Live version available at [nickhericks.github.io/techdegree-project-2/](https://nickhericks.github.io/techdegree-project-2/)
+
+<br><br>
+
+<img src="https://res.cloudinary.com/dtqevfsxh/image/upload/v1550132316/portfolio/list-pagination-and-filtering.gif" width="500px">
 
 ## Project objective
 Without JavaScript, this page displays a long list of students. I have enhanced the usability of the page by using unobtrusive JavaScript to dynamically divide the list into "pages". Each 'page' now only displays 10 students at a time.
